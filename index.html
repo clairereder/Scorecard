@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stakeholder Scorecard — Your Turn</title>
+<!--
+  ===========================================================================
+  INSTRUCTORS: To use a different scenario, edit the text inside
+  <div id="scenarioBody">...</div> below. To change the sample answer that
+  appears under "Reveal sample analysis," edit the SAMPLE object in the
+  <script> at the bottom (levels 1–5 per cell) and the sampleTensions /
+  sampleAlignment text. Everything runs client-side; safe to host & iframe.
+  ===========================================================================
+-->
+<style>
+  :root{
+    --brand:#00693E; --dark:#043A26; --moss:#7FA63C; --ink:#1B2D24; --gray:#5C6B62;
+    --card:#F2F7EC; --line:#D9E4D0; --paper:#FFFFFF;
+    --l1:#E7F1E1; --l2:#C2DDAC; --l3:#8DC177; --l4:#3E8B54; --l5:#00693E;
+    --serif:"Cambria","Georgia","Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:28px 22px 56px}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--moss);
+    font-weight:700;margin:0 0 6px}
+  h1{font-family:var(--serif);color:var(--brand);font-size:34px;line-height:1.08;margin:0 0 14px;font-weight:700}
+  h2{font-family:var(--serif);color:var(--brand);font-size:20px;margin:26px 0 10px;font-weight:700}
+  p{margin:0 0 12px}
+  .scenario{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:6px 0 22px}
+  .scenario .tag{display:inline-block;background:var(--brand);color:#fff;font-size:11px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;margin-bottom:10px}
+  .scenario h3{font-family:var(--serif);margin:0 0 8px;color:var(--ink);font-size:18px}
+  .scenario p{margin:0;color:var(--ink)}
+  .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 14px}
+  .toolbar .hint{font-size:14px;color:var(--gray);margin-right:4px}
+  .swatches{display:flex;flex-wrap:wrap;gap:8px}
+  .sw{display:inline-flex;align-items:center;gap:7px;border:2px solid transparent;border-radius:999px;
+    padding:6px 12px 6px 8px;background:#fff;cursor:pointer;font-family:var(--sans);font-size:13px;
+    font-weight:600;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .sw .dot{width:18px;height:18px;border-radius:50%;border:1px solid rgba(0,0,0,.12)}
+  .sw[aria-pressed="true"]{border-color:var(--brand);background:var(--card)}
+  .sw:focus-visible{outline:3px solid #9CC4AC;outline-offset:2px}
+  .palette-pulse{animation:pulse .5s ease 2}
+  @keyframes pulse{50%{box-shadow:0 0 0 4px rgba(0,105,62,.35)}}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--brand);font-weight:600;font-size:13px;
+    padding:8px 14px;border-radius:8px;cursor:pointer;font-family:var(--sans)}
+  .btn:hover{background:var(--card)}
+  .btn:focus-visible{outline:3px solid #9CC4AC;outline-offset:2px}
+  .grid-scroll{overflow-x:auto;border-radius:12px}
+  table{border-collapse:separate;border-spacing:4px;width:100%;min-width:760px}
+  th,td{padding:0}
+  th.dim{background:var(--dark);color:#fff;font-size:13px;font-weight:700;border-radius:8px;
+    padding:10px 8px;text-align:center;vertical-align:middle;font-family:var(--sans)}
+  th.corner{background:transparent}
+  th.stake{background:#EEF4E8;color:var(--brand);font-weight:700;font-size:14px;text-align:left;
+    padding:10px 14px;border-radius:8px;white-space:nowrap}
+  td.cell{height:54px}
+  .cell button{width:100%;height:100%;min-height:54px;border:1.5px solid var(--line);border-radius:8px;
+    background:#fff;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:700;color:transparent;
+    transition:background .12s,color .12s;display:flex;align-items:center;justify-content:center}
+  .cell button:hover{border-color:var(--brand)}
+  .cell button:focus-visible{outline:3px solid #9CC4AC;outline-offset:2px}
+  .cell button[data-level="1"]{background:var(--l1);color:#264a33;border-color:transparent}
+  .cell button[data-level="2"]{background:var(--l2);color:#264a33;border-color:transparent}
+  .cell button[data-level="3"]{background:var(--l3);color:#143A22;border-color:transparent}
+  .cell button[data-level="4"]{background:var(--l4);color:#fff;border-color:transparent}
+  .cell button[data-level="5"]{background:var(--l5);color:#fff;border-color:transparent}
+  .reflect{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+  .reflect .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .reflect label{display:block;font-family:var(--serif);font-weight:700;color:var(--brand);font-size:16px;margin-bottom:8px}
+  .reflect textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:8px;padding:10px;
+    font-family:var(--sans);font-size:14px;color:var(--ink);resize:vertical;background:#fff}
+  .reflect textarea:focus-visible{outline:3px solid #9CC4AC;outline-offset:1px}
+  .reveal-wrap{margin-top:24px}
+  .sample{display:none;margin-top:14px;background:#fff;border:1.5px solid var(--moss);border-radius:12px;padding:18px 20px}
+  .sample.open{display:block}
+  .sample table{min-width:680px}
+  .sample .mini{font-size:12px;font-weight:700;border-radius:6px;text-align:center;padding:8px 4px}
+  .sample h4{font-family:var(--serif);color:var(--brand);margin:16px 0 6px;font-size:16px}
+  .sample ol{margin:0 0 4px;padding-left:20px}
+  .sample li{margin-bottom:6px;font-size:14px}
+  .foot{margin-top:30px;font-size:12px;color:var(--gray);border-top:1px solid var(--line);padding-top:14px}
+  @media (max-width:620px){
+    .reflect{grid-template-columns:1fr}
+    h1{font-size:27px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Stakeholder Scorecard</p>
+  <h1>Your Turn: Map the Priorities</h1>
+  <p style="max-width:70ch;color:var(--gray)">Read the scenario, then fill in the card. For each stakeholder, mark how strongly they prioritize each dimension in <em>this</em> situation — from Low to High. There's no single right answer; the goal is to surface where interests collide and where they align.</p>
+
+  <div class="scenario">
+    <span class="tag">Scenario</span>
+    <div id="scenarioBody">
+      <h3>A $2.8 million cure</h3>
+      <p>A biotech firm wins FDA approval for a <strong>one-time gene therapy</strong> that effectively cures a severe inherited disease affecting roughly 3,000 U.S. children. Clinical results are dramatic. The list price is <strong>$2.8 million per patient</strong>, paid once. Payers, employers, and state Medicaid programs must now decide whether — and how — to cover it.</p>
+    </div>
+  </div>
+
+  <div class="toolbar" role="toolbar" aria-label="Priority tools">
+    <span class="hint">1. Pick a priority level &nbsp;→&nbsp; 2. Click cells to fill them.</span>
+    <div class="swatches" id="swatches">
+      <button class="sw" data-level="1" aria-pressed="false"><span class="dot" style="background:var(--l1)"></span>Low</button>
+      <button class="sw" data-level="2" aria-pressed="false"><span class="dot" style="background:var(--l2)"></span>Low–Med</button>
+      <button class="sw" data-level="3" aria-pressed="false"><span class="dot" style="background:var(--l3)"></span>Med</button>
+      <button class="sw" data-level="4" aria-pressed="false"><span class="dot" style="background:var(--l4)"></span>Med–High</button>
+      <button class="sw" data-level="5" aria-pressed="false"><span class="dot" style="background:var(--l5)"></span>High</button>
+      <button class="sw" data-level="0" aria-pressed="false"><span class="dot" style="background:#fff"></span>Erase</button>
+    </div>
+    <button class="btn" id="resetBtn" type="button">Reset card</button>
+  </div>
+
+  <div class="grid-scroll">
+    <table id="card" aria-label="Stakeholder scorecard">
+      <thead><tr id="headRow"></tr></thead>
+      <tbody id="cardBody"></tbody>
+    </table>
+  </div>
+
+  <h2>Now reflect</h2>
+  <div class="reflect">
+    <div class="box">
+      <label for="tensions">Two tensions I found</label>
+      <textarea id="tensions" placeholder="Where do stakeholders pull in opposite directions?"></textarea>
+    </div>
+    <div class="box">
+      <label for="alignment">One alignment I found</label>
+      <textarea id="alignment" placeholder="Where do stakeholders actually want the same thing?"></textarea>
+    </div>
+  </div>
+
+  <div class="reveal-wrap">
+    <button class="btn" id="revealBtn" type="button" aria-expanded="false" aria-controls="sample">Reveal sample analysis</button>
+    <div class="sample" id="sample">
+      <p style="margin-top:0;color:var(--gray);font-size:13px">One defensible reading — yours may differ, and that's fine. What matters is the reasoning.</p>
+      <div class="grid-scroll"><table id="sampleCard"><thead><tr id="sampleHead"></tr></thead><tbody id="sampleBody"></tbody></table></div>
+      <h4>Tensions</h4>
+      <ol id="sampleTensions"></ol>
+      <h4>Alignment</h4>
+      <ol id="sampleAlignment"></ol>
+    </div>
+  </div>
+
+  <p class="foot">Tuck School of Business at Dartmouth · Center for Health Care — Stakeholder Scorecard exercise.</p>
+</div>
+
+<script>
+  var DIMS = ["Access", "Cost to you", "Cost to society", "Quality", "Innovation"];
+  var STAKES = ["Patients","Providers","Payers","Policymakers","Product developers","Employers"];
+  var LABELS = {1:"Low",2:"Low–Med",3:"Med",4:"Med–High",5:"High"};
+
+  // Sample answer (gene-therapy scenario): levels 1–5 per [stakeholder][dimension]
+  var SAMPLE = {
+    "Patients":           [5,5,1,5,5],
+    "Providers":          [5,2,1,5,4],
+    "Payers":             [1,1,5,3,2],
+    "Policymakers":       [4,3,5,3,3],
+    "Product developers": [5,1,1,5,5],
+    "Employers":          [2,3,5,3,1]
+  };
+  var sampleTensions = [
+    "Access vs. society cost — patients, providers, and the developer want broad coverage; payers, employers, and policymakers brace for a $2.8M-per-patient hit to the population budget.",
+    "One-time price vs. annual budgets — the full cost lands in a single budget year even though the benefit lasts a lifetime, which is brutal for a payer's one-year lens (and drives interest in installment or outcomes-based payment).",
+    "Innovation vs. societal cost — rewarding a genuine breakthrough pulls against containing total spending."
+  ];
+  var sampleAlignment = [
+    "Patients + Providers + Product developers all want the therapy covered and used.",
+    "Payers + Employers + Policymakers all want to manage the budget impact — often agreeing on novel payment models even while fighting over access."
+  ];
+
+  // --- build the interactive grid ---
+  var headRow = document.getElementById("headRow");
+  headRow.appendChild(el("th","corner",""));
+  DIMS.forEach(function(d){ headRow.appendChild(el("th","dim",d)); });
+
+  var body = document.getElementById("cardBody");
+  STAKES.forEach(function(s){
+    var tr = document.createElement("tr");
+    tr.appendChild(el("th","stake",s));
+    DIMS.forEach(function(d,ci){
+      var td = document.createElement("td"); td.className="cell";
+      var b = document.createElement("button");
+      b.type="button";
+      b.setAttribute("aria-label", s+" — "+d+": not set");
+      b.addEventListener("click", function(){ paint(b, s, d); });
+      td.appendChild(b); tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+
+  var active = null; // selected level 1–5, or 0 for erase, or null
+  var swatches = document.querySelectorAll("#swatches .sw");
+  swatches.forEach(function(sw){
+    sw.addEventListener("click", function(){
+      active = parseInt(sw.getAttribute("data-level"),10);
+      swatches.forEach(function(o){ o.setAttribute("aria-pressed", o===sw ? "true":"false"); });
+    });
+  });
+
+  function paint(btn, s, d){
+    if(active === null){
+      var bar = document.getElementById("swatches");
+      bar.classList.remove("palette-pulse"); void bar.offsetWidth; bar.classList.add("palette-pulse");
+      return;
+    }
+    if(active === 0){
+      btn.removeAttribute("data-level"); btn.textContent="";
+      btn.setAttribute("aria-label", s+" — "+d+": not set");
+    } else {
+      btn.setAttribute("data-level", active); btn.textContent = LABELS[active];
+      btn.setAttribute("aria-label", s+" — "+d+": "+LABELS[active]);
+    }
+  }
+
+  document.getElementById("resetBtn").addEventListener("click", function(){
+    document.querySelectorAll("#cardBody .cell button").forEach(function(b){
+      b.removeAttribute("data-level"); b.textContent="";
+    });
+    document.getElementById("tensions").value="";
+    document.getElementById("alignment").value="";
+  });
+
+  // --- reveal sample ---
+  var sampleBuilt = false;
+  document.getElementById("revealBtn").addEventListener("click", function(){
+    var panel = document.getElementById("sample");
+    var open = panel.classList.toggle("open");
+    this.setAttribute("aria-expanded", open ? "true":"false");
+    this.textContent = open ? "Hide sample analysis" : "Reveal sample analysis";
+    if(open && !sampleBuilt){ buildSample(); sampleBuilt = true; }
+  });
+
+  function buildSample(){
+    var sh = document.getElementById("sampleHead");
+    sh.appendChild(el("th","corner",""));
+    DIMS.forEach(function(d){ sh.appendChild(el("th","dim",d)); });
+    var sb = document.getElementById("sampleBody");
+    STAKES.forEach(function(s){
+      var tr=document.createElement("tr");
+      tr.appendChild(el("th","stake",s));
+      SAMPLE[s].forEach(function(lv){
+        var td=document.createElement("td"); td.className="cell";
+        var cell=document.createElement("div"); cell.className="mini";
+        cell.textContent=LABELS[lv];
+        var bg=getComputedStyle(document.documentElement).getPropertyValue("--l"+lv);
+        cell.style.background=bg.trim();
+        cell.style.color = (lv>=4) ? "#fff" : "#1B2D24";
+        td.appendChild(cell); tr.appendChild(td);
+      });
+      sb.appendChild(tr);
+    });
+    fill("sampleTensions", sampleTensions);
+    fill("sampleAlignment", sampleAlignment);
+  }
+  function fill(id, arr){ var ol=document.getElementById(id);
+    arr.forEach(function(t){ var li=document.createElement("li"); li.textContent=t; ol.appendChild(li); }); }
+  function el(tag, cls, txt){ var e=document.createElement(tag); if(cls)e.className=cls; if(txt)e.textContent=txt; return e; }
+</script>
+</body>
+</html>
